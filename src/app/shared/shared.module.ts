@@ -14,7 +14,7 @@ import { ModalComponent } from './modal/modal.component';
   exports: [
     ModalComponent
   ],
-  // For injecting service in individual module
+  // For injecting service in ian ndividual module
   // providers: [ModalService]
 })
 export class SharedModule { }

@@ -30,12 +30,12 @@ export class ModalService {
 
   isModalOpen(id: string) : boolean {
     // Boolean(this.modals.find(element => element.id === id)?.visible)
+    // console.log(!!this.modals.find(element => element.id === id)?.visible)
     return !!this.modals.find(element => element.id === id)?.visible;
   }
   
   toggleModal(id: string) {
     const modal = this.modals.find(element => element.id === id)
-
     if(modal) {
       modal.visible = !modal.visible
     }
