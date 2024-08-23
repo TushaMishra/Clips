@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 
+interface IModal {
+  id: string;
+  visible: boolean
+}
+
 // Three methods of making a class injectable
 // 1) 
 // Make gloabally available
@@ -13,13 +18,26 @@ import { Injectable } from '@angular/core';
 
 
 export class ModalService {
-  private visible = false
+  private modals: IModal[] = []
 
-  isModalOpen() {
-    return this.visible;
+  register(id: string) {
+    this.modals.push({
+      id,
+      visible: false
+    })
+    console.log(this.modals)
+  }
+
+  isModalOpen(id: string) : boolean {
+    // Boolean(this.modals.find(element => element.id === id)?.visible)
+    return !!this.modals.find(element => element.id === id)?.visible;
   }
   
-  toggleModal() {
-    this.visible = !this.visible
+  toggleModal(id: string) {
+    const modal = this.modals.find(element => element.id === id)
+
+    if(modal) {
+      modal.visible = !modal.visible
+    }
   }
 }
