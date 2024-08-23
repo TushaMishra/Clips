@@ -18,7 +18,7 @@ interface IModal {
 
 
 export class ModalService {
-  private modals: IModal[] = []
+  public modals: IModal[] = []
 
   register(id: string) {
     this.modals.push({
@@ -26,6 +26,15 @@ export class ModalService {
       visible: false
     })
     console.log(this.modals)
+  }
+
+  // Clear from memory when the component destroyed
+  // Memory will be free when component destroyed
+  // However data in a service persists, we should responsibly manage
+  unregister(id: string) {
+    this.modals = this.modals.filter(
+      element => element.id !== id
+    )
   }
 
   isModalOpen(id: string) : boolean {
