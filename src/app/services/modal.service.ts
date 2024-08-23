@@ -18,7 +18,7 @@ interface IModal {
 
 
 export class ModalService {
-  public modals: IModal[] = []
+  private modals: IModal[] = []
 
   register(id: string) {
     this.modals.push({
