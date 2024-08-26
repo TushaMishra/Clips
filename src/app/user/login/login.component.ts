@@ -10,4 +10,8 @@ credentials = {
   email: '',
   password: ''
 }
+
+login() {
+  console.log(this.credentials)
+}
 }
