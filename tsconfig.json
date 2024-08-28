@@ -19,6 +19,9 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "skipDefaultLibCheck": true,  //This setting stops TypeScript from type-cheking file in the 
+                                  // node_modules diretory. However, type-checking will remain enabled 
+                                  // for code in the src directory.
     "lib": [
       "ES2022",
       "dom"
