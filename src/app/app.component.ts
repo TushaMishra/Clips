@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 //import { ModalService } from './services/modal.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ export class AppComponent /*implements OnInit*/ {
  // showModal = true
 
  // constructor(public modal: ModalService) {}
+ constructor(public auth: AuthService) {}
   
   // ngOnInit(): void {
   //   setInterval(() => this.showModal = !this.showModal, 1000)
