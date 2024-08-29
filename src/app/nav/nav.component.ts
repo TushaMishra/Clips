@@ -8,14 +8,10 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
-  isAuthenticated = false
   constructor(
     public modal: ModalService,
     public auth: AuthService
   ) {    
-    this.auth.isAuthenticated$.subscribe(status => {
-      this.isAuthenticated = status
-    })
   }
 
   openModal($event: Event) {
