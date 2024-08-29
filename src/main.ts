@@ -17,5 +17,3 @@ firebase.auth().onAuthStateChanged(() => {
 
   appInit = true
 })
-
-

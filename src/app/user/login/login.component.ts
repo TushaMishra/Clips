@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-login',
@@ -6,12 +7,36 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-credentials = {
-  email: '',
-  password: ''
-}
+  credentials = {
+    email: '',
+    password: ''
+  }
 
-login() {
-  console.log(this.credentials)
-}
+  showAlert = false
+  alertMsg = 'Please wait! Your account is being created.'
+  alertColor='blue'
+  inSubmission = false
+
+  constructor(private auth: AngularFireAuth) {  
+  }
+  async login() {
+    this.showAlert = true
+    this.alertMsg = 'Please wait! We are logging you in.'
+    this.alertColor='blue'
+    this.inSubmission = true
+    try {
+      await this.auth.signInWithEmailAndPassword(
+        this.credentials.email, this.credentials.password
+      )
+    }
+    catch(e) {
+      this.inSubmission = false
+      this.alertMsg = 'An unexpected error occured. Please try again later!'
+      this.alertColor='red'
+
+      return
+    }
+    this.alertMsg = 'Success! You are now logged in.'
+    this.alertColor='green'
+  }
 }
