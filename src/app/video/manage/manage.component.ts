@@ -26,6 +26,7 @@ export class ManageComponent implements OnInit {
     // this.sort$.subscribe(console.log)
     // this.sort$.next('test')
   }
+  
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
@@ -34,7 +35,6 @@ export class ManageComponent implements OnInit {
     })
     this.clipService.getUserClips(this.sort$).subscribe(docs => {
       this.clips = []
-
       docs.forEach(doc => {
         this.clips.push({
           docID: doc.id,
