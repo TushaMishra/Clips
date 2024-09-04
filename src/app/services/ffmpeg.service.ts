@@ -27,5 +27,16 @@ export class FfmpegService {
     const data = await fetchFile(file)
 
     this.ffmpeg.FS('writeFile', file.name, data)
+
+    await this.ffmpeg.run(
+      // Input
+      '-i', file.name, // -i -> tell ffmpeg to grab a specific file from our file system
+      // Output Option
+      '-ss', '00:00:01', //'-ss', 'hh: mm: ss' // -ss -> allows us to configure the current timestamp by default set the timestamp the very beginning of the video
+      '-frames:v', '1',
+      '-filter:v', 'scale=510:-1',
+      // Output'
+      'output_01.png'
+    )
   }
 } 
