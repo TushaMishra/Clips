@@ -28,15 +28,43 @@ export class FfmpegService {
 
     this.ffmpeg.FS('writeFile', file.name, data)
 
+    const seconds = [1, 2 , 3]
+    const commands: string[] = []
+
+    seconds.forEach(second => {
+      commands.push (
+        // Input
+        '-i', file.name, // -i -> tell ffmpeg to grab a specific file from our file system
+        // Output Option
+        '-ss', `00:00:0${second}`, //'-ss', 'hh: mm: ss' // -ss -> allows us to configure the current timestamp by default set the timestamp the very beginning of the video
+        '-frames:v', '1',
+        '-filter:v', 'scale=510:-1',
+        // Output'
+        `output_0${second}.png`
+      )
+    });
+
     await this.ffmpeg.run(
-      // Input
-      '-i', file.name, // -i -> tell ffmpeg to grab a specific file from our file system
-      // Output Option
-      '-ss', '00:00:01', //'-ss', 'hh: mm: ss' // -ss -> allows us to configure the current timestamp by default set the timestamp the very beginning of the video
-      '-frames:v', '1',
-      '-filter:v', 'scale=510:-1',
-      // Output'
-      'output_01.png'
+      ...commands
     )
+
+    const screenshots: string[] = []
+
+    seconds.forEach(second => {
+      const screenshotFile = this.ffmpeg.FS(
+        'readFile',`output_0${second}.png`
+      )
+      const screenshotBlob = new Blob(
+        [screenshotFile.buffer], {
+          type: 'image/png'
+        }
+      )
+
+      const screenshotURL = URL.createObjectURL(screenshotBlob)
+
+      screenshots.push(screenshotURL)
+    })
+
+    return screenshots
   }
 } 
