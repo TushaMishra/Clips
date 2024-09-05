@@ -12,17 +12,20 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   providedIn: 'root'
 })
 export class ClipService {
-  public clipCollection : AngularFirestoreCollection<IClip>
+  pageClips: IClip[] = []
+  pendingReq = false
+
+  public clipsCollection : AngularFirestoreCollection<IClip>
   constructor(
     private db: AngularFirestore,
     private auth: AngularFireAuth,
     private storage: AngularFireStorage
   ) { 
-    this.clipCollection = db.collection('clips')
+    this.clipsCollection = db.collection('clips')
   }
 
   createClip(data: IClip): Promise<DocumentReference<IClip>>{
-    return this.clipCollection.add(data)
+    return this.clipsCollection.add(data)
   }
 
   getUserClips(sort$: BehaviorSubject<string>) {
@@ -36,7 +39,7 @@ export class ClipService {
           return of([])
         }
 
-        const query = this.clipCollection.ref.where(
+        const query = this.clipsCollection.ref.where(
           'uid', '==', user.uid
         ).orderBy(
           'timestamp',
@@ -50,7 +53,7 @@ export class ClipService {
   }
 
   updateClip(id: string, title: string) {
-    return this.clipCollection.doc(id).update({
+    return this.clipsCollection.doc(id).update({
       title
     })
   }
@@ -63,7 +66,42 @@ export class ClipService {
     await clipRef.delete()
     await screenshotRef.delete()
 
-    await this.clipCollection.doc(clip.docID).delete()
+    await this.clipsCollection.doc(clip.docID).delete()
+  }
+
+  async getClips() {
+    if(this.pendingReq) {
+      return
+    }
+
+    this.pendingReq = true
+    let query = this.clipsCollection.ref.orderBy(
+      'timestamp', 'desc'
+    ).limit(3)
+    const { length } = this.pageClips
+
+    if(length) {
+      const lastDocID = this.pageClips[length - 1].docID
+      // const lastDoc = await new Promise( resolve => {
+      //   this.clipsCollection.doc(lastDocID)
+      //   .get()
+      // })
+      const lastDoc = await this.clipsCollection.doc(lastDocID)
+        .get()
+        .toPromise()
+
+      query = query.startAfter(lastDoc)
+    }
+
+    const snapshot = await query.get()
+console.log(this.pageClips)
+    snapshot.forEach(doc => {
+      this.pageClips.push({
+        docID: doc.id,
+        ...doc.data()
+      })
+    })
+
+    this.pendingReq = false
   }
 }
-
