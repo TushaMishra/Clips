@@ -1,6 +1,7 @@
 [{
-    "origin": ["*"], 
-    "responseHeader": ["Content-Type"],
+    "origin": ["*"],  // Name of the domain which can allow to download resources (example.com) 
+    "responseHeader": ["Content-Type"],   // array of header that can be added to the response 
+                                        // Content-Type header stores the Mime type of the file, The browser is going to need this information for correctly rendering the page
     "method": ["GET"],
     "maxAgeSeconds": 3600
 }]
