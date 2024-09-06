@@ -80,7 +80,7 @@ export class ClipService implements Resolve<IClip | null> {
     this.pendingReq = true
     let query = this.clipsCollection.ref.orderBy(
       'timestamp', 'desc'
-    ).limit(3)
+    ).limit(6)
     const { length } = this.pageClips
 
     if(length) {
