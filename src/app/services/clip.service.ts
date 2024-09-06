@@ -97,7 +97,6 @@ export class ClipService implements Resolve<IClip | null> {
     }
 
     const snapshot = await query.get()
-console.log(this.pageClips)
     snapshot.forEach(doc => {
       this.pageClips.push({
         docID: doc.id,

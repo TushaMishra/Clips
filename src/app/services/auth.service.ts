@@ -23,7 +23,6 @@ export class AuthService {
     private route: ActivatedRoute
   ) { 
     this.usersCollection = db.collection('users')
-    // auth.user.subscribe(console.log)
     this.isAuthenticated$ = auth.user.pipe(
       map(user => !!user)
     )
