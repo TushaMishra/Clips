@@ -23,6 +23,12 @@ const routes: Routes = [
     }
   },
   {
+    path: '', //Angularwill append the path with video routing module
+    // Example
+    // path: 'dashboard' // dashboard/manage, dashboard/video
+    loadChildren: async () => (await import('./video/video.module')).VideoModule
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }
